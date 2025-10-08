@@ -15,6 +15,7 @@ export type ResumeData = {
   }
   summary: string
   skills: string[]
+  areasOfInterest?: string[]
   education: Array<{ school: string; degree: string; start: string; end: string; details?: string }>
   experience: Array<{ company: string; role: string; start: string; end: string; bullets: string[] }>
   photo?: string

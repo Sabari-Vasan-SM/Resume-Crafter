@@ -18,6 +18,64 @@ import { ResumePreview } from "@/components/resume-preview"
 import { DownloadButtons } from "@/components/download-buttons"
 import { Wand2, Edit3 } from "lucide-react"
 
+type TagInputProps = {
+  tags: string[]
+  onChange: (tags: string[]) => void
+  placeholder?: string
+}
+
+function TagInput({ tags, onChange, placeholder }: TagInputProps) {
+  const [value, setValue] = useState("")
+
+  function addTag(t: string) {
+    const v = t.trim()
+    if (!v) return
+    if (tags.includes(v)) return
+    onChange([...tags, v])
+    setValue("")
+  }
+
+  function removeTag(idx: number) {
+    onChange(tags.filter((_, i) => i !== idx))
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault()
+      addTag(value)
+    } else if (e.key === "Backspace" && value === "" && tags.length) {
+      // remove last when empty backspace
+      removeTag(tags.length - 1)
+    }
+  }
+
+  return (
+    <div className="grid gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {tags.map((t, i) => (
+          <span key={t + i} className="inline-flex items-center gap-2 rounded-md bg-primary/10 px-2 py-1 text-sm">
+            <span>{t}</span>
+            <button
+              type="button"
+              aria-label={`Remove ${t}`}
+              onClick={() => removeTag(i)}
+              className="-mr-1 rounded px-1 text-xs opacity-70 hover:opacity-100"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+      <Input
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={onKeyDown}
+      />
+    </div>
+  )
+}
+
 export default function Page() {
   const { resume, setResume, replaceResume } = useResume()
   const [loadingAI, setLoadingAI] = useState(false)
@@ -147,18 +205,20 @@ export default function Page() {
       </div>
 
       <div className="grid gap-3">
-        <Label>Skills (comma separated)</Label>
-        <Input
-          placeholder="React, TypeScript, Node.js, AWS"
-          value={resume.skills.join(", ")}
-          onChange={(e) =>
-            setResume({
-              skills: e.target.value
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            })
-          }
+        <Label>Skills</Label>
+        <TagInput
+          tags={resume.skills}
+          onChange={(tags) => setResume({ skills: tags })}
+          placeholder="Add a skill and press Enter"
+        />
+      </div>
+
+      <div className="grid gap-3">
+        <Label>Areas of Interest</Label>
+        <TagInput
+          tags={resume.areasOfInterest || []}
+          onChange={(tags) => setResume({ areasOfInterest: tags })}
+          placeholder="Add an interest and press Enter"
         />
       </div>
 
@@ -336,7 +396,7 @@ export default function Page() {
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">Download your resume as PDF or PNG.</p>
-          <DownloadButtons previewRef={previewRef} />
+          <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
         </CardContent>
       </Card>
     </main>
