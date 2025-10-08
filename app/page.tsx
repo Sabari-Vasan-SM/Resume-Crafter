@@ -354,10 +354,10 @@ export default function Page() {
             <Edit3 className="size-4" />
             {editing ? "Preview Focus" : "Edit"}
           </Button>
-          <Button onClick={onGenerate} disabled={loadingAI} className="gap-2">
-            <Wand2 className="size-4" />
-            {loadingAI ? "Generating..." : "Generate Resume"}
-          </Button>
+          {/* Download buttons moved to header */}
+          <div>
+            <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
+          </div>
         </div>
       </header>
 
@@ -396,7 +396,6 @@ export default function Page() {
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">Download your resume as PDF or PNG.</p>
-          <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
         </CardContent>
       </Card>
     </main>
