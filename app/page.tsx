@@ -80,6 +80,7 @@ export default function Page() {
   const { resume, setResume, replaceResume } = useResume()
   const [loadingAI, setLoadingAI] = useState(false)
   const [editing, setEditing] = useState(true)
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const previewRef = useRef<HTMLDivElement | null>(null)
 
   const onGenerate = async () => {
@@ -112,6 +113,7 @@ export default function Page() {
     <aside
       className={cn("glass-card flex h-full flex-col gap-4 p-4", "transition-all duration-200")}
       aria-label="Resume editor"
+      style={undefined}
     >
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold text-pretty">Editor</h2>
@@ -340,11 +342,11 @@ export default function Page() {
           : { ["--color-primary" as any]: "oklch(0.5 0.02 260)" }
       }
     >
-      <header className="flex items-center justify-between">
+      <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-primary/10" />
           <div>
-            <h1 className="text-balance text-xl font-semibold md:text-2xl">Resume crafter</h1>
+            <h1 className="text-balance text-xl font-semibold md:text-2xl">Resume Crafter</h1>
             <p className="text-muted-foreground text-xs md:text-sm">Professional. Editable. Exportable.</p>
           </div>
         </div>
@@ -354,7 +356,18 @@ export default function Page() {
             <Edit3 className="size-4" />
             {editing ? "Preview Focus" : "Edit"}
           </Button>
-          {/* Download buttons moved to header */}
+
+          {/* Mobile-only editor toggle */}
+          <Button
+            className="md:hidden"
+            variant="ghost"
+            onClick={() => setMobileSidebarOpen(true)}
+            aria-label="Open editor"
+          >
+            Editor
+          </Button>
+
+          {/* Download buttons (visible on all sizes) */}
           <div>
             <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
           </div>
@@ -369,8 +382,26 @@ export default function Page() {
       >
         {resume.layout === "right" ? (
           <>
-            {editing && sidebar}
-            <Card className="glass-card relative flex min-h-[70dvh] items-stretch overflow-hidden">
+            {/* Desktop sidebar */}
+            <div className="hidden md:block">{editing && sidebar}</div>
+
+            {/* Mobile overlay sidebar */}
+            {mobileSidebarOpen && (
+              <div className="fixed inset-0 z-50 flex">
+                <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold">Editor</h2>
+                    <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>
+                      Close
+                    </Button>
+                  </div>
+                  {sidebar}
+                </aside>
+              </div>
+            )}
+
+            <Card className="glass-card relative flex min-h-[50dvh] md:min-h-[70dvh] items-stretch overflow-hidden">
               <CardContent className="p-3 md:p-6">
                 <ResumePreview ref={previewRef} />
               </CardContent>
@@ -385,12 +416,27 @@ export default function Page() {
               </CardContent>
               <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5" />
             </Card>
-            {editing && sidebar}
+            <div className="hidden md:block">{editing && sidebar}</div>
+
+            {mobileSidebarOpen && (
+              <div className="fixed inset-0 z-50 flex">
+                <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold">Editor</h2>
+                    <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>
+                      Close
+                    </Button>
+                  </div>
+                  {sidebar}
+                </aside>
+              </div>
+            )}
           </>
         )}
       </div>
 
-      <Card className="glass-card">
+      <Card className="glass-card md:static fixed bottom-4 left-4 right-4 md:left-auto md:right-auto md:bottom-auto z-40">
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Export</CardTitle>
         </CardHeader>
@@ -398,6 +444,8 @@ export default function Page() {
           <p className="text-sm text-muted-foreground">Download your resume as PDF or PNG.</p>
         </CardContent>
       </Card>
+      {/* add spacer for mobile so content isn't covered by fixed export card */}
+      <div className="md:hidden h-28" />
     </main>
   )
 }
