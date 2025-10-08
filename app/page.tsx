@@ -284,7 +284,7 @@ export default function Page() {
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-primary/10" />
           <div>
-            <h1 className="text-balance text-xl font-semibold md:text-2xl">AI Resume Builder</h1>
+            <h1 className="text-balance text-xl font-semibold md:text-2xl">Resume crafter</h1>
             <p className="text-muted-foreground text-xs md:text-sm">Professional. Editable. Exportable.</p>
           </div>
         </div>
