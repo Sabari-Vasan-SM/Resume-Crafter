@@ -70,6 +70,57 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
         </>
       )}
 
+      {/* Areas of Interest */}
+      {(resume.areasOfInterest?.length ?? 0) > 0 && (
+        <>
+          <div className="my-5 h-px bg-border" />
+          <section className="grid gap-2">
+            <h3 className="text-sm font-semibold text-primary">Areas of Interest</h3>
+            <ul className="flex flex-wrap gap-2">
+              {resume.areasOfInterest!.map((a, i) => (
+                <li key={`${a}-${i}`} className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
+
+      {/* Projects */}
+      {resume.projects && resume.projects.length > 0 && (
+        <>
+          <div className="my-5 h-px bg-border" />
+          <section className="grid gap-2">
+            <h3 className="text-sm font-semibold text-primary">Projects</h3>
+            <div className="grid gap-4">
+              {resume.projects.map((p, idx) => (
+                <div key={idx} className="grid gap-1">
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium text-pretty">{p.name || "Project"}</div>
+                    {p.liveLink && (
+                      <a href={p.liveLink} target="_blank" rel="noreferrer" className="text-xs text-primary underline">
+                        Live
+                      </a>
+                    )}
+                  </div>
+                  {p.description && <p className="text-sm text-muted-foreground">{p.description}</p>}
+                  {(p.techStack?.length ?? 0) > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {p.techStack!.map((t, ti) => (
+                        <span key={ti} className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
+
       {/* Experience */}
       {resume.experience.length > 0 && (
         <>

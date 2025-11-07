@@ -287,6 +287,29 @@ export default function Page() {
         })}
       />
 
+      <SectionEditor
+        title="Projects"
+        items={resume.projects}
+        onChange={(items) => setResume({ projects: items })}
+        renderItem={(item, update) => (
+          <div className="grid grid-cols-1 gap-2">
+            <Input placeholder="Project Name" value={item.name} onChange={(e) => update({ name: e.target.value })} />
+            <Input placeholder="Live link (optional)" value={item.liveLink || ""} onChange={(e) => update({ liveLink: e.target.value })} />
+            <Textarea
+              placeholder="Short description"
+              className="min-h-16"
+              value={item.description || ""}
+              onChange={(e) => update({ description: e.target.value })}
+            />
+            <div>
+              <Label>Tech stack (tags)</Label>
+              <TagInput tags={item.techStack || []} onChange={(tags) => update({ techStack: tags })} placeholder="Add tech and press Enter" />
+            </div>
+          </div>
+        )}
+        getNewItem={() => ({ name: "", description: "", techStack: [], liveLink: "" })}
+      />
+
       <Separator />
 
       <div className="grid gap-3">

@@ -16,6 +16,7 @@ export type ResumeData = {
   summary: string
   skills: string[]
   areasOfInterest?: string[]
+  projects: Array<{ name: string; description?: string; techStack: string[]; liveLink?: string }>
   education: Array<{ school: string; degree: string; start: string; end: string; details?: string }>
   experience: Array<{ company: string; role: string; start: string; end: string; bullets: string[] }>
   photo?: string
@@ -31,6 +32,7 @@ const DEFAULT_RESUME: ResumeData = {
   contact: { email: "", phone: "", location: "", website: "", linkedin: "", github: "" },
   summary: "",
   skills: [],
+  projects: [],
   education: [],
   experience: [],
   photo: undefined,
