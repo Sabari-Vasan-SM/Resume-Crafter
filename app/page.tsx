@@ -111,7 +111,12 @@ export default function Page() {
 
   const sidebar = (
     <aside
-      className={cn("glass-card flex h-full flex-col gap-4 p-4", "transition-all duration-200")}
+      className={cn(
+        "glass-card flex flex-col gap-4 p-4",
+        "transition-all duration-200",
+        // make the editor scrollable on larger screens without affecting the preview
+        "md:overflow-auto md:max-h-[calc(100vh-6rem)]",
+      )}
       aria-label="Resume editor"
       style={undefined}
     >
@@ -414,7 +419,7 @@ export default function Page() {
             {mobileSidebarOpen && (
               <div className="fixed inset-0 z-50 flex">
                 <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
-                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden">
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-base font-semibold">Editor</h2>
                     <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>
@@ -426,27 +431,31 @@ export default function Page() {
               </div>
             )}
 
-            <Card className="glass-card relative flex min-h-[50dvh] md:min-h-[70dvh] items-stretch overflow-hidden">
-              <CardContent className="p-3 md:p-6">
-                <ResumePreview ref={previewRef} />
-              </CardContent>
-              <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5" />
-            </Card>
+            <div className="md:sticky md:top-6 md:self-start md:w-full">
+              <Card className="glass-card relative flex min-h-[50dvh] md:min-h-[70dvh] items-stretch overflow-hidden">
+                <CardContent className="p-3 md:p-6">
+                  <ResumePreview ref={previewRef} />
+                </CardContent>
+                <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5" />
+              </Card>
+            </div>
           </>
         ) : (
           <>
-            <Card className="glass-card relative flex min-h-[70dvh] items-stretch overflow-hidden">
-              <CardContent className="p-3 md:p-6">
-                <ResumePreview ref={previewRef} />
-              </CardContent>
-              <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5" />
-            </Card>
+            <div className="md:sticky md:top-6 md:self-start md:w-full">
+              <Card className="glass-card relative flex min-h-[50dvh] md:min-h-[70dvh] items-stretch overflow-hidden">
+                <CardContent className="p-3 md:p-6">
+                  <ResumePreview ref={previewRef} />
+                </CardContent>
+                <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5" />
+              </Card>
+            </div>
             <div className="hidden md:block">{editing && sidebar}</div>
 
             {mobileSidebarOpen && (
               <div className="fixed inset-0 z-50 flex">
                 <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
-                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden">
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-base font-semibold">Editor</h2>
                     <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>
@@ -461,16 +470,31 @@ export default function Page() {
         )}
       </div>
 
-      <Card className="glass-card md:static fixed bottom-4 left-4 right-4 md:left-auto md:right-auto md:bottom-auto z-40">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">Export</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-muted-foreground">Download your resume as PDF or PNG.</p>
-        </CardContent>
-      </Card>
-      {/* add spacer for mobile so content isn't covered by fixed export card */}
-      <div className="md:hidden h-28" />
+      <footer className="mt-8">
+        <div className="max-w-[1400px] mx-auto flex flex-col items-center gap-2 py-6">
+          <p className="text-sm text-muted-foreground">
+            Designed and developed by <span className="font-medium">Sabarivasan</span>
+          </p>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://github.com/Sabari-Vasan-SM"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-primary/5"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/sabarivasan-s-m-b10229255/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-primary/5"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }
