@@ -53,7 +53,10 @@ function TagInput({ tags, onChange, placeholder }: TagInputProps) {
     <div className="grid gap-2">
       <div className="flex flex-wrap items-center gap-2">
         {tags.map((t, i) => (
-          <span key={t + i} className="inline-flex items-center gap-2 rounded-md bg-primary/10 px-2 py-1 text-sm">
+          <span
+            key={t + i}
+            className="inline-flex items-center gap-2 rounded-md bg-primary/10 px-2 py-1 text-sm tag-item tag-item-added"
+          >
             <span>{t}</span>
             <button
               type="button"
@@ -382,14 +385,14 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={() => setEditing((v) => !v)} className="gap-2">
+          <Button variant="secondary" onClick={() => setEditing((v) => !v)} className="gap-2 btn-smooth">
             <Edit3 className="size-4" />
             {editing ? "Preview Focus" : "Edit"}
           </Button>
 
           {/* Mobile-only editor toggle */}
           <Button
-            className="md:hidden"
+            className="md:hidden btn-smooth"
             variant="ghost"
             onClick={() => setMobileSidebarOpen(true)}
             aria-label="Open editor"
@@ -398,8 +401,10 @@ export default function Page() {
           </Button>
 
           {/* Download buttons (visible on all sizes) */}
-          <div>
-            <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
+          <div className="ml-1 flex items-center gap-2">
+            <div className="btn-smooth">
+              <DownloadButtons previewRef={previewRef as React.RefObject<HTMLDivElement>} />
+            </div>
           </div>
         </div>
       </header>
@@ -419,7 +424,7 @@ export default function Page() {
             {mobileSidebarOpen && (
               <div className="fixed inset-0 z-50 flex">
                 <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
-                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen">
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen animate-slide-in">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-base font-semibold">Editor</h2>
                     <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>
@@ -455,7 +460,7 @@ export default function Page() {
             {mobileSidebarOpen && (
               <div className="fixed inset-0 z-50 flex">
                 <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSidebarOpen(false)} />
-                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen">
+                <aside className="glass-card relative z-50 w-full max-w-[420px] p-4 md:hidden overflow-auto max-h-screen animate-slide-in">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-base font-semibold">Editor</h2>
                     <Button variant="ghost" onClick={() => setMobileSidebarOpen(false)}>

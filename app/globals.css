@@ -133,8 +133,37 @@
 
 @layer components {
   .glass-card {
-    @apply rounded-xl bg-card/70 backdrop-blur-md border border-border/60 shadow-sm;
+    /* modern, minimal card */
+    border-radius: 12px;
+    background-color: rgba(255,255,255,0.6);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
   }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(15,23,42,0.08);
+  }
+
+  /* Button smooth style */
+  .btn-smooth {
+    transition: transform 120ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .btn-smooth:hover { transform: translateY(-2px); }
+
+  /* Tag animation */
+  .tag-item { transition: transform 140ms ease, opacity 140ms ease; }
+  .tag-item-added { transform: scale(1.04); opacity: 1; }
+
+  /* Mobile overlay slide-in */
+  @keyframes slideInFromRight {
+    from { transform: translateX(20%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .animate-slide-in { animation: slideInFromRight 220ms cubic-bezier(.2,.9,.2,1); }
 }
 
 @layer utilities {
