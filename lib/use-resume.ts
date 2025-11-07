@@ -21,7 +21,7 @@ export type ResumeData = {
   experience: Array<{ company: string; role: string; start: string; end: string; bullets: string[] }>
   photo?: string
   template: "classic" | "modern"
-  font: "sans" | "serif" | "mono"
+  font: "sans" | "serif" | "mono" | "inter" | "merri"
   color: "blue" | "gray"
   layout: "left" | "right"
 }

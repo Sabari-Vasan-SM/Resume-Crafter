@@ -6,7 +6,11 @@ import { useResume } from "@/lib/use-resume"
 
 export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePreview(_, ref) {
   const { resume } = useResume()
-  const fontClass = resume.font === "serif" ? "font-serif" : resume.font === "mono" ? "font-mono" : "font-sans"
+  let fontClass = "font-sans"
+  if (resume.font === "serif") fontClass = "font-serif"
+  else if (resume.font === "mono") fontClass = "font-mono"
+  else if (resume.font === "inter") fontClass = "font-inter"
+  else if (resume.font === "merri") fontClass = "font-merri"
 
   return (
     <div

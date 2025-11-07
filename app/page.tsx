@@ -327,11 +327,13 @@ export default function Page() {
           <select
             className="rounded-md border bg-background px-3 py-2 text-sm"
             value={resume.font}
-            onChange={(e) => setResume({ font: e.target.value as "sans" | "serif" | "mono" })}
+            onChange={(e) => setResume({ font: e.target.value as "sans" | "serif" | "mono" | "inter" | "merri" })}
           >
             <option value="sans">Sans</option>
             <option value="serif">Serif</option>
             <option value="mono">Monospace</option>
+            <option value="inter">Inter</option>
+            <option value="merri">Merriweather</option>
           </select>
 
           <select
