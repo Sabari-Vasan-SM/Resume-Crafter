@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -17,6 +17,7 @@ import { PhotoUpload } from "@/components/photo-upload"
 import { ResumePreview } from "@/components/resume-preview"
 import { DownloadButtons } from "@/components/download-buttons"
 import { Wand2, Edit3 } from "lucide-react"
+import Loader from "@/components/loader"
 
 type TagInputProps = {
   tags: string[]
@@ -85,6 +86,13 @@ export default function Page() {
   const [editing, setEditing] = useState(true)
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const previewRef = useRef<HTMLDivElement | null>(null)
+  const [showInitialLoader, setShowInitialLoader] = useState(true)
+
+  useEffect(() => {
+    // show loader for a short moment on initial load
+    const t = setTimeout(() => setShowInitialLoader(false), 1200)
+    return () => clearTimeout(t)
+  }, [])
 
   const onGenerate = async () => {
     setLoadingAI(true)
@@ -367,6 +375,8 @@ export default function Page() {
   )
 
   return (
+    <>
+      {showInitialLoader && <Loader />}
     <main
       className={cn("mx-auto flex min-h-dvh max-w-[1400px] flex-col gap-4 p-4 md:p-6")}
       style={
@@ -501,6 +511,7 @@ export default function Page() {
         </div>
       </footer>
     </main>
+    </>
   )
 }
 
