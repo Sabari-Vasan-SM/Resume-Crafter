@@ -53,6 +53,29 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
         </p>
       </section>
 
+      {/* Education */}
+      {resume.education.length > 0 && (
+        <>
+          <div className="my-5 h-px bg-border" />
+          <section className="grid gap-2">
+            <h3 className="text-sm font-semibold text-primary">Education</h3>
+            <div className="grid gap-3">
+              {resume.education.map((ed, idx) => (
+                <div key={idx} className="flex flex-wrap items-baseline justify-between gap-2">
+                  <div className="font-medium">
+                    {ed.degree || "Degree"} · {ed.school || "School"}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {(ed.start || "Start") + " — " + (ed.end || "End")}
+                  </div>
+                  {ed.details && <p className="basis-full text-sm text-muted-foreground">{ed.details}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
+
       {/* Skills */}
       {resume.skills.length > 0 && (
         <>
@@ -70,19 +93,35 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
         </>
       )}
 
-      {/* Areas of Interest */}
-      {(resume.areasOfInterest?.length ?? 0) > 0 && (
+      {/* Experience */}
+      {resume.experience.length > 0 && (
         <>
           <div className="my-5 h-px bg-border" />
           <section className="grid gap-2">
-            <h3 className="text-sm font-semibold text-primary">Areas of Interest</h3>
-            <ul className="flex flex-wrap gap-2">
-              {resume.areasOfInterest!.map((a, i) => (
-                <li key={`${a}-${i}`} className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
-                  {a}
-                </li>
+            <h3 className="text-sm font-semibold text-primary">Experience</h3>
+            <div className="grid gap-4">
+              {resume.experience.map((exp, idx) => (
+                <div key={idx} className="grid gap-1">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <div className="font-medium">
+                      {exp.role || "Role"} · {exp.company || "Company"}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {(exp.start || "Start") + " — " + (exp.end || "Present")}
+                    </div>
+                  </div>
+                  {(exp.bullets?.length ?? 0) > 0 && (
+                    <ul className="ml-4 list-disc text-sm leading-relaxed">
+                      {exp.bullets!.map((b, bi) => (
+                        <li key={bi} className="pl-1">
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               ))}
-            </ul>
+            </div>
           </section>
         </>
       )}
@@ -121,58 +160,19 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
         </>
       )}
 
-      {/* Experience */}
-      {resume.experience.length > 0 && (
+      {/* Areas of Interest */}
+      {(resume.areasOfInterest?.length ?? 0) > 0 && (
         <>
           <div className="my-5 h-px bg-border" />
           <section className="grid gap-2">
-            <h3 className="text-sm font-semibold text-primary">Experience</h3>
-            <div className="grid gap-4">
-              {resume.experience.map((exp, idx) => (
-                <div key={idx} className="grid gap-1">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div className="font-medium">
-                      {exp.role || "Role"} · {exp.company || "Company"}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {(exp.start || "Start") + " — " + (exp.end || "Present")}
-                    </div>
-                  </div>
-                  {(exp.bullets?.length ?? 0) > 0 && (
-                    <ul className="ml-4 list-disc text-sm leading-relaxed">
-                      {exp.bullets!.map((b, bi) => (
-                        <li key={bi} className="pl-1">
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+            <h3 className="text-sm font-semibold text-primary">Areas of Interest</h3>
+            <ul className="flex flex-wrap gap-2">
+              {resume.areasOfInterest!.map((a, i) => (
+                <li key={`${a}-${i}`} className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
+                  {a}
+                </li>
               ))}
-            </div>
-          </section>
-        </>
-      )}
-
-      {/* Education */}
-      {resume.education.length > 0 && (
-        <>
-          <div className="my-5 h-px bg-border" />
-          <section className="grid gap-2">
-            <h3 className="text-sm font-semibold text-primary">Education</h3>
-            <div className="grid gap-3">
-              {resume.education.map((ed, idx) => (
-                <div key={idx} className="flex flex-wrap items-baseline justify-between gap-2">
-                  <div className="font-medium">
-                    {ed.degree || "Degree"} · {ed.school || "School"}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {(ed.start || "Start") + " — " + (ed.end || "End")}
-                  </div>
-                  {ed.details && <p className="basis-full text-sm text-muted-foreground">{ed.details}</p>}
-                </div>
-              ))}
-            </div>
+            </ul>
           </section>
         </>
       )}
