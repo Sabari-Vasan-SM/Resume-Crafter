@@ -445,6 +445,7 @@ export default function Page() {
                 </aside>
               </div>
             )}
+            
 
             <div className="md:sticky md:top-6 md:self-start md:w-full">
               <Card className="glass-card relative flex min-h-[50dvh] md:min-h-[70dvh] items-stretch overflow-hidden">
