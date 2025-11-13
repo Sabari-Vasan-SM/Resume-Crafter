@@ -1,22 +1,25 @@
 "use client"
 
 import type React from "react"
+import type { LucideIcon } from "lucide-react"
+import type { ResumeData } from "@/lib/use-resume"
 
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { cn } from "@/lib/utils"
 import { useResume } from "@/lib/use-resume"
 import { PhotoUpload } from "@/components/photo-upload"
 import { ResumePreview } from "@/components/resume-preview"
 import { DownloadButtons } from "@/components/download-buttons"
-import { Wand2, Edit3 } from "lucide-react"
+import { Edit3, Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react"
 import Loader from "@/components/loader"
 
 type TagInputProps = {
@@ -87,6 +90,20 @@ export default function Page() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const previewRef = useRef<HTMLDivElement | null>(null)
   const [showInitialLoader, setShowInitialLoader] = useState(true)
+
+  const contactFields: Array<{
+    key: keyof ResumeData["contact"]
+    placeholder: string
+    icon: LucideIcon
+    type?: React.HTMLInputTypeAttribute
+  }> = [
+    { key: "email", placeholder: "Email", icon: Mail, type: "email" },
+    { key: "phone", placeholder: "Phone", icon: Phone, type: "tel" },
+    { key: "location", placeholder: "Location", icon: MapPin },
+    { key: "website", placeholder: "Website", icon: Globe },
+    { key: "linkedin", placeholder: "LinkedIn", icon: Linkedin },
+    { key: "github", placeholder: "GitHub", icon: Github },
+  ]
 
   useEffect(() => {
     // show loader for a short moment on initial load
@@ -162,52 +179,28 @@ export default function Page() {
       <div className="grid gap-3">
         <Label>Contact</Label>
         <div className="grid grid-cols-2 gap-3">
-          <Input
-            placeholder="Email"
-            value={resume.contact.email}
-            onChange={(e) => setResume({ contact: { ...resume.contact, email: e.target.value } })}
-          />
-          <Input
-            placeholder="Phone"
-            value={resume.contact.phone}
-            onChange={(e) => setResume({ contact: { ...resume.contact, phone: e.target.value } })}
-          />
-          <Input
-            placeholder="Location"
-            value={resume.contact.location}
-            onChange={(e) =>
-              setResume({
-                contact: { ...resume.contact, location: e.target.value },
-              })
-            }
-          />
-          <Input
-            placeholder="Website"
-            value={resume.contact.website || ""}
-            onChange={(e) =>
-              setResume({
-                contact: { ...resume.contact, website: e.target.value },
-              })
-            }
-          />
-          <Input
-            placeholder="LinkedIn"
-            value={resume.contact.linkedin || ""}
-            onChange={(e) =>
-              setResume({
-                contact: { ...resume.contact, linkedin: e.target.value },
-              })
-            }
-          />
-          <Input
-            placeholder="GitHub"
-            value={resume.contact.github || ""}
-            onChange={(e) =>
-              setResume({
-                contact: { ...resume.contact, github: e.target.value },
-              })
-            }
-          />
+          {contactFields.map(({ key, placeholder, icon: Icon, type }) => {
+            const value = resume.contact[key] ?? ""
+            return (
+              <InputGroup key={key} className="h-10">
+                <InputGroupAddon className="text-muted-foreground">
+                  <Icon className="size-4" aria-hidden="true" />
+                  <span className="sr-only">{placeholder}</span>
+                </InputGroupAddon>
+                <InputGroupInput
+                  placeholder={placeholder}
+                  aria-label={placeholder}
+                  type={type}
+                  value={value}
+                  onChange={(e) =>
+                    setResume({
+                      contact: { ...resume.contact, [key]: e.target.value },
+                    })
+                  }
+                />
+              </InputGroup>
+            )
+          })}
         </div>
       </div>
 

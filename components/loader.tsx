@@ -33,7 +33,7 @@ export default function Loader() {
           </div>
           <div className="mt-4 text-center">
             <span className="block font-semibold text-lg text-white">Loading</span>
-            <span className="block text-sm text-muted-foreground mt-2">Designed and developed by Sabarivasan</span>
+            <span className="block text-sm text-muted-foreground mt-2"></span>
           </div>
         </div>
       </div>
