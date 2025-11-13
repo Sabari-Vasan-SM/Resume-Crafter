@@ -1,6 +1,8 @@
 "use client"
 
+import type { LucideIcon } from "lucide-react"
 import { forwardRef } from "react"
+import { Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useResume } from "@/lib/use-resume"
 
@@ -11,6 +13,74 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
   else if (resume.font === "mono") fontClass = "font-mono"
   else if (resume.font === "inter") fontClass = "font-inter"
   else if (resume.font === "merri") fontClass = "font-merri"
+
+  const normalizeUrl = (value: string) => {
+    if (!value) return ""
+    return /^https?:\/\//i.test(value) ? value : `https://${value}`
+  }
+
+  const telHref = (value: string) => value.replace(/[^\d+]/g, "")
+
+  type ContactItem = {
+    key: string
+    icon: LucideIcon
+    label: string
+    href?: string
+    external?: boolean
+  }
+
+  const contactItems: ContactItem[] = [
+    resume.contact.email
+      ? {
+          key: "email",
+          icon: Mail,
+          label: resume.contact.email,
+          href: `mailto:${resume.contact.email}`,
+        }
+      : null,
+    resume.contact.phone
+      ? {
+          key: "phone",
+          icon: Phone,
+          label: resume.contact.phone,
+          href: `tel:${telHref(resume.contact.phone)}`,
+        }
+      : null,
+    resume.contact.location
+      ? {
+          key: "location",
+          icon: MapPin,
+          label: resume.contact.location,
+        }
+      : null,
+    resume.contact.website
+      ? {
+          key: "website",
+          icon: Globe,
+          label: resume.contact.website,
+          href: normalizeUrl(resume.contact.website),
+          external: true,
+        }
+      : null,
+    resume.contact.linkedin
+      ? {
+          key: "linkedin",
+          icon: Linkedin,
+          label: resume.contact.linkedin,
+          href: normalizeUrl(resume.contact.linkedin),
+          external: true,
+        }
+      : null,
+    resume.contact.github
+      ? {
+          key: "github",
+          icon: Github,
+          label: resume.contact.github,
+          href: normalizeUrl(resume.contact.github),
+          external: true,
+        }
+      : null,
+  ].filter(Boolean) as ContactItem[]
 
   return (
     <div
@@ -36,12 +106,28 @@ export const ResumePreview = forwardRef<HTMLDivElement, {}>(function ResumePrevi
           <h2 className="text-pretty text-2xl font-semibold leading-tight">{resume.name || "Your Name"}</h2>
           <p className="text-muted-foreground text-sm">{resume.title || "Professional Title"}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            {resume.contact.email && <span>{resume.contact.email}</span>}
-            {resume.contact.phone && <span>{resume.contact.phone}</span>}
-            {resume.contact.location && <span>{resume.contact.location}</span>}
-            {resume.contact.website && <span>{resume.contact.website}</span>}
-            {resume.contact.linkedin && <span>LinkedIn: {resume.contact.linkedin}</span>}
-            {resume.contact.github && <span>GitHub: {resume.contact.github}</span>}
+            {contactItems.map(({ key, icon: Icon, label, href, external }) => {
+              const content = (
+                <>
+                  <Icon className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
+                  <span className="truncate">{label}</span>
+                </>
+              )
+              return href ? (
+                <a
+                  key={key}
+                  href={href}
+                  className="inline-flex max-w-[220px] items-center gap-1.5 hover:text-primary"
+                  {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                >
+                  {content}
+                </a>
+              ) : (
+                <span key={key} className="inline-flex max-w-[220px] items-center gap-1.5">
+                  {content}
+                </span>
+              )
+            })}
           </div>
         </div>
       </div>
